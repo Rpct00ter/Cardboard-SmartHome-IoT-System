@@ -1,25 +1,39 @@
 #include "DHT.h"
 
+// ===== DHT22 =====
 #define DHTPIN 4
 #define DHTTYPE DHT22
 
+// ===== PIR =====
 #define PIR_PIN 18
+
+// ===== MQ-2 =====
+#define GAS_PIN 23
 
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
+
   Serial.begin(115200);
 
+  // DHT22
   dht.begin();
 
+  // PIR
   pinMode(PIR_PIN, INPUT);
+
+  // MQ-2
+  pinMode(GAS_PIN, INPUT);
 
   Serial.println("System uruchomiony");
 }
 
 void loop() {
 
-  // ===== DHT22 =====
+  // =========================
+  // DHT22
+  // =========================
+
   float temperature = dht.readTemperature();
   float humidity = dht.readHumidity();
 
@@ -32,19 +46,41 @@ void loop() {
     Serial.print("Wilgotnosc: ");
     Serial.print(humidity);
     Serial.println(" %");
-  }
-  else {
+
+  } else {
+
     Serial.println("Blad odczytu DHT22");
   }
 
-  // ===== PIR =====
+  // =========================
+  // PIR
+  // =========================
+
   int motion = digitalRead(PIR_PIN);
 
   if (motion == HIGH) {
+
     Serial.println("Wykryto ruch!");
-  }
-  else {
+
+  } else {
+
     Serial.println("Brak ruchu");
+  }
+
+  // =========================
+  // MQ-2
+  // =========================
+
+  int gasState = digitalRead(GAS_PIN);
+
+
+  if (gasState == HIGH) {
+
+    Serial.println("Wykryto szkodliwy gaz!");
+
+  } else {
+
+    Serial.println("Powietrze bezpieczne do oddychania");
   }
 
   Serial.println("----------------");
