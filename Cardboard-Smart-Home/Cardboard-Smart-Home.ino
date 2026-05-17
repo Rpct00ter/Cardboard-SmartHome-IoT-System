@@ -10,6 +10,9 @@
 // ===== MQ-2 =====
 #define GAS_PIN 23
 
+// ==== Czujnik Światła ====
+#define LIGHT_PIN 19
+
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
@@ -83,6 +86,23 @@ void loop() {
     Serial.println("Powietrze bezpieczne do oddychania");
   }
 
+  // =========================
+  // Czujnik światła
+  // =========================
+  int lightValue = digitalRead(LIGHT_PIN);
+
+  Serial.print("Poziom swiatla: ");
+  Serial.println(lightValue);
+  int lightState = digitalRead(LIGHT_PIN);
+
+  if (lightState == HIGH) {
+
+    Serial.println("Jest jasno");
+
+  } else {
+
+    Serial.println("Jest ciemno");
+  }
   Serial.println("----------------");
 
   delay(2000);
